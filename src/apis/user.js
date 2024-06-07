@@ -16,14 +16,24 @@ export const loginAPI = ({qqid,password})=>{
   })
 }
 
-// export const getDetailInfoAPI = ()=>{
+export const getDetailInfoAPI = ()=>{
+  return request({
+    url:'/user/userinfo',
+    method:'GET',
+  })
+}
+
+
+// export const updateAvatarAPI  = (avatarUrl)=>{
   
 //   // console.log(urlEncodedData);
   
 //   return request({
-//     url:'/user/userinfo',
-//     method:'Get',
-    
+//     url:'/user/updateAvatar',
+//     method:'Patch',
+//     params:{
+//       avatarUrl:avatarUrl
+//     }
     
 //   })
 // }

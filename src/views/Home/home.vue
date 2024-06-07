@@ -3,6 +3,15 @@ import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore.js'
 const search = ref('');
 const userStore=useUserStore();
+
+console.log('info',userStore.userInfo);
+
+   userStore.getDetailInfo(); 
+  console.log('detail',userStore.userInfo.detail);
+ 
+ 
+ 
+ 
 </script>
 <template >
   <div class="Home">

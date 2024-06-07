@@ -32,8 +32,9 @@ const onSubmit = async (values) => {
       console.log('submit', values);
       console.log(userStore.userInfo.message);
       console.log('登录成功');
+      // userStore.userInfo.detail=userStore.getDetailInfo();
       router.replace('/home');
-      
+     
       // 可能的后续操作，如页面跳转
     } else {
       // 登录失败的处理，可以是显示错误信息等

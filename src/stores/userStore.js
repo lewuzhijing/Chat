@@ -2,7 +2,7 @@
 
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { loginAPI } from '@/apis/user'
+import { loginAPI ,getDetailInfoAPI} from '@/apis/user'
 
 export const useUserStore = defineStore('user', () => {
   
@@ -13,19 +13,21 @@ export const useUserStore = defineStore('user', () => {
     console.log('res',res);
     if(!res.avatarUrl)
     res.avatarUrl='https://p.qqan.com/up/2021-5/16215608436164640.png'
-    
+    // https://tse2-mm.cn.bing.net/th/id/OIP-C.4wgKhs-PxZzVtDbWY3j2pwAAAA?rs=1&pid=ImgDetMain
     userInfo.value = res
    
    
   
   }
-  // const getDetailInfo =async ()=>{
-  //   const res =await getDetailInfoAPI();
-  //   console.log('DetailInfo',res);
-  //   userInfo.value.detail=res.data;
+  const getDetailInfo =async ()=>{
+    console.log('11');
+    
+    const res =await getDetailInfoAPI({});
+    console.log('DetailInfo',res);
+    userInfo.value.detail=res.data;
     
 
-  // }
+  }
 
   // 退出时清除用户信息
   const clearUserInfo = () => {
@@ -37,7 +39,7 @@ export const useUserStore = defineStore('user', () => {
   return {
     userInfo,
     getUserInfo,
-    // getDetailInfo,
+    getDetailInfo,
     clearUserInfo,
   }
 }, {

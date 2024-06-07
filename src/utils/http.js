@@ -16,12 +16,15 @@ const httpInstance = axios.create({
 httpInstance.interceptors.request.use(config => {
   // 1. 从pinia获取token数据
   const userStore = useUserStore()
+  
+  
   // 2. 按照后端的要求拼接token数据
-  const token = userStore.userInfo.data
+  const token = userStore.userInfo.data;
+  console.log('token',token);
   
   
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+    config.headers.Authorization = `${token}`
   }
   return config
 }, e => Promise.reject(e))
