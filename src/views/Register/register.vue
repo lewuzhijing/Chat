@@ -2,7 +2,7 @@
 <script setup>
 import { Form} from 'vant'
 import { ref , onUnmounted} from 'vue';
-
+import { registerAPI,sendEmailCodeAPI} from '@/apis/user.js'
 import 'vant/es/toast/style';
 
     const userEmail = ref('');
@@ -14,7 +14,8 @@ import 'vant/es/toast/style';
     const count = ref(60);
     const checked=ref(false);
     const sms=ref('');
-
+     
+       
 
     const onSubmit = (values) => {
       if(password.value!=repassword.value){
@@ -28,6 +29,15 @@ import 'vant/es/toast/style';
      else if( checked.value===true){
         // TODO
          console.log('submit', values);
+         registerAPI(values).then((result) => {
+          console.log('relust',result);
+          if(result.code===1)alert(result.message)
+          
+         }).catch((err) => {
+          console.log('err',err);
+          
+         });
+         
       }
     };
     
@@ -35,6 +45,15 @@ import 'vant/es/toast/style';
       console.log(checked.value);
     }
      const  getAuth=async ()=>{
+      sendEmailCodeAPI(userEmail.value).then((result) => {
+       
+        
+       console.log('获取验证码成功',result);
+    
+    }).catch((err) => {
+      console.log(err);
+      
+    });
       isdisabled.value=true;
       var t= setInterval(() => {
         count.value--;
@@ -67,7 +86,7 @@ import 'vant/es/toast/style';
      <van-cell-group inset>
      <van-field
       v-model="userEmail"
-      name="QQ邮箱账号"
+      name="email"
       label="QQ邮箱账号"
       placeholder="登录账号"
       :rules="[{ required: true, message: '请填写注册QQ邮箱账号' }]"
@@ -77,7 +96,7 @@ import 'vant/es/toast/style';
     v-model="sms"
     center
     clearable
-    name="邮箱验证码"
+    name="code"
     label="QQ邮箱验证"
     placeholder="请输入QQ邮箱验证码"
   >
@@ -94,7 +113,7 @@ import 'vant/es/toast/style';
   <van-field
       v-model="userName"
       type="text"
-      name="用户名"
+      name="username"
       label="用户名"
       placeholder="用户名"
       :rules="[{ required: true, message: '请填写用户名' }]"
@@ -110,7 +129,7 @@ import 'vant/es/toast/style';
     <van-field
       v-model="repassword"
       type="password"
-      name="密码"
+      name="password"
       label="确认密码"
       placeholder="再次输入密码"
       :rules="[{ required: true, message: '请填写密码' }]"

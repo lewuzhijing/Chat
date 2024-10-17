@@ -1,15 +1,17 @@
 
 <script setup>
 import { Form, Toast } from 'vant'
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
 import { useUserStore } from '@/stores/userStore.js'
 import 'vant/es/toast/style';
 import router from '@/router';
+import { loginAPI } from '@/apis/user'
 const userStore = useUserStore()
 
 const qqid = ref('3210884103');
 const password = ref('123456');
-const checked = ref(false)
+
+const checked = ref(true)
 const onSubmit = async (values) => {
   if (!checked.value) {
     console.log('请同意协议');
@@ -18,45 +20,32 @@ const onSubmit = async (values) => {
   }
 
   try {
-    // 尝试登录
-    
-    
-     
-    await userStore.getUserInfo({ qqid:'3210884103',password:'123456'});
-    // 登录成功判断
-    if (userStore.userInfo) {
-      // Toast({
-      //   type: 'success',
-      //   message: '登录成功',
-      // });
-      console.log('submit', values);
-      console.log(userStore.userInfo.message);
-      console.log('登录成功');
-      // userStore.userInfo.detail=userStore.getDetailInfo();
+    // 尝试获取用户信息
+    // userStore.getUserInfo({ qqid: values.qqid, password: values.password })
+    const res = await loginAPI({ qqid: values.qqid, password: values.password })
+    userStore.userInfo.qqid = values.qqid;
+    userStore.userInfo.password = values.password;
+    console.log('re', res);
+    userStore.userInfo.value = res;
+    // console.log('den',userStore.UserInfo.value.code);
+    // console.log('code',userStore.userInfo.code);
+
+    if (res && res.code === 0) {
       router.replace('/home');
-     
-      // 可能的后续操作，如页面跳转
-    } else {
-      // 登录失败的处理，可以是显示错误信息等
-      console.error('登录失败');
-      // Toast({
-      //   type: 'error',
-      //   message: '登录失败，请检查账户信息',
-      // });
     }
-  } catch (error) {
-    // 网络错误或其他异常处理
-    console.error('登录请求出错:', error);
-    // Toast({
-    //   type: 'error',
-    //   message: '登录请求出错，请稍后重试',
-    // });
+    else {
+      alert('账号或密码错误！')
+    }
+  }
+
+  catch (err) {
+    console.error('在登录或获取用户信息过程中发生错误', err);
+    // 这里处理可能的网络错误或其他异常
+    alert('登录过程中发生错误，请重试！');
   }
 };
 const isprove = function () {
-
   console.log(checked.value);
-
 }
 
 </script>

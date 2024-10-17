@@ -23,17 +23,69 @@ export const getDetailInfoAPI = ()=>{
   })
 }
 
+//发送验证码
+export const sendEmailCodeAPI = (email)=>{
+  return request({
+    url:'/user/sendEmailCode',
+    method:'POST',
+    params:{
+      email:email
+    }
+  })
+}
 
-// export const updateAvatarAPI  = (avatarUrl)=>{
-  
-//   // console.log(urlEncodedData);
-  
-//   return request({
-//     url:'/user/updateAvatar',
-//     method:'Patch',
-//     params:{
-//       avatarUrl:avatarUrl
-//     }
+//注册
+export const registerAPI = (params)=>{
+  return request({
+    url:'/user/register',
+    method:'POST',
+    params
+  })
+}
+
+//改密
+export const rePasswordAPI = (params)=>{
+  return request({
+    url:'/user/resetPassword',
+    method:'POST',
+    params
+  })
+}
+//上传图片获得地址
+export const upLoadAPI = (formData) => {
+  return request({
+    url:'/user/upload',
+    method:'POST',
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data', // 设置正确的Content-Type
+    },
     
-//   })
-// }
+  })
+}
+
+
+
+export const updateAvatarAPI  = (avatarUrl)=>{
+  
+  // console.log(urlEncodedData);
+  
+  return request({
+    url:'/user/updateAvatar',
+    method:'Patch',
+    params:{
+      avatarUrl:avatarUrl
+    }
+    
+  })
+}
+
+export const getChatMessageAPI = (friendId)=>{
+  return request({
+    url:'/user/withFriend',
+    method:'Get',
+    params:{
+      friendId:friendId
+    }
+  })
+}

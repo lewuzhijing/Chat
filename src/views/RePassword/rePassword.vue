@@ -2,11 +2,11 @@
 <script setup>
 import { Form} from 'vant'
 import { ref} from 'vue';
-
+import {sendEmailCodeAPI,rePasswordAPI} from '@/apis/user'
 import 'vant/es/toast/style';
 import router from '@/router';
 
-    const userId = ref('');
+    const userId = ref('3210884103@qq.com');
     // const username = ref('');
     const password = ref('');
     const repassword = ref('');
@@ -25,14 +25,33 @@ import router from '@/router';
      else {
         // TODO
          console.log('submit', values);
-         alert('修改成功');
-         router.replace('/');
+         rePasswordAPI(values).then((result) => {
+          if(result.code===0){
+            console.log('改密成功',result);
+            router.replace('/');
+          }
+          else{
+            console.log('验证码错误');
+            
+          }
+          
+         }).catch((err) => {
+          console.log(err);
+          
+         });
+  
+        
       }
     };
     
    
      const  getAuth=async ()=>{
       isdisabled.value=true;
+      console.log('userId',userId.value);
+      
+       const res= await sendEmailCodeAPI(userId.value);
+       console.log('重置密码验证码',res);
+       
       var t= setInterval(() => {
         count.value--;
         
@@ -64,7 +83,7 @@ import router from '@/router';
      <van-cell-group inset>
      <van-field
       v-model="userId"
-      name="QQ账号"
+      name="email"
       label="QQ账号"
       placeholder="登录账号"
       :rules="[{ required: true, message: '请填写注册QQ邮箱账号' }]"
@@ -74,7 +93,7 @@ import router from '@/router';
     v-model="sms"
     center
     clearable
-    name="邮箱验证码"
+    name="code"
     label="QQ邮箱验证"
     placeholder="请输入QQ邮箱验证码"
     
@@ -93,15 +112,14 @@ import router from '@/router';
     <van-field
       v-model="password"
       type="password"
-      name="密码"
+      name="newPassword"
       label="密码"
       placeholder="密码"
       :rules="[{ required: true, message: '请填写密码' }]"
     />
     <van-field
       v-model="repassword"
-      type="password"
-      name="密码"
+      
       label="密码"
       placeholder="再次输入密码"
       :rules="[{ required: true, message: '请填写密码' }]"
